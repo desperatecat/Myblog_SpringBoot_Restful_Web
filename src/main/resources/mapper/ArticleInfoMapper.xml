@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lucasxu.myblog.dao.ArticleInfoMapper">
+  <resultMap id="BaseResultMap" type="com.lucasxu.myblog.entity.ArticleInfo">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="is_top" jdbcType="BIT" property="is_top" />
+    <result column="traffic" jdbcType="INTEGER" property="traffic" />
+    <result column="create_by" jdbcType="TIMESTAMP" property="create_by" />
+    <result column="modified_by" jdbcType="TIMESTAMP" property="modified_by" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, title, summary, is_top, traffic, create_by, modified_by
+  </sql>
+  <select id="selectByExample" parameterType="com.lucasxu.myblog.entity.ArticleInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from tbl_article_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.lucasxu.myblog.entity.ArticleInfo" useGeneratedKeys="true">
+    insert into tbl_article_info (title, summary, is_top, 
+      traffic, create_by, modified_by
+      )
+    values (#{title,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{is_top,jdbcType=BIT}, 
+      #{traffic,jdbcType=INTEGER}, #{create_by,jdbcType=TIMESTAMP}, #{modified_by,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.lucasxu.myblog.entity.ArticleInfo" useGeneratedKeys="true">
+    insert into tbl_article_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="title != null">
+        title,
+      </if>
+      <if test="summary != null">
+        summary,
+      </if>
+      <if test="is_top != null">
+        is_top,
+      </if>
+      <if test="traffic != null">
+        traffic,
+      </if>
+      <if test="create_by != null">
+        create_by,
+      </if>
+      <if test="modified_by != null">
+        modified_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null">
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="is_top != null">
+        #{is_top,jdbcType=BIT},
+      </if>
+      <if test="traffic != null">
+        #{traffic,jdbcType=INTEGER},
+      </if>
+      <if test="create_by != null">
+        #{create_by,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modified_by != null">
+        #{modified_by,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>
