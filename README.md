@@ -1,4 +1,4 @@
-# myblog
+# Myblog Personal Blog Website
 
 Tools: IntelliJ IDEA/Eclipse, Maven;
 
